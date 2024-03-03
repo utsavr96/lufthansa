@@ -12,7 +12,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity(name = "users")
-public class User extends BaseModel{
+public class User extends BaseModel {
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    List<Booking> bookings;
     private String username;
     private String email;
     private String password;
@@ -21,6 +23,4 @@ public class User extends BaseModel{
     private String nationality;
     private String address;
     private String phoneNumber;
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    List<Booking> bookings;
 }
