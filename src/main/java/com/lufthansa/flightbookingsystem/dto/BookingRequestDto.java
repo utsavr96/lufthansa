@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class BookingRequestDTO {
+public class BookingRequestDto {
 
     @NotNull
     private LocalDateTime bookingTime;

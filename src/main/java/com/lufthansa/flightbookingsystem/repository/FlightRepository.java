@@ -1,5 +1,6 @@
 package com.lufthansa.flightbookingsystem.repository;
 
+import com.lufthansa.flightbookingsystem.custom.RepositoryQuery;
 import com.lufthansa.flightbookingsystem.model.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,10 +15,7 @@ import java.util.UUID;
 public interface FlightRepository extends JpaRepository<Flight, UUID> {
     Optional<List<Flight>> findByArrivalTime(LocalDateTime arrivalTime);
 
-    @Query("SELECT f FROM flights f " +
-            "WHERE f.origin = :origin " +
-            "AND f.destination = :destination " +
-            "AND f.availableSeats >= :seatsNeeded")
-    Optional<List<Flight>> findByAvailableSeatsIsNotNAndOriginAndDestination(int seatsNeeded, String origin, String destination);
+    //@Query(value = RepositoryQuery.FIND_FLIGHT_FROM_ORIGIN_TO_DESTINATION_WITH_SEATS)
+    List<Flight> findByOriginAndDestinationAndAvailableSeatsGreaterThanEqual(String origin, String destination, int availableSeats);
 }
 

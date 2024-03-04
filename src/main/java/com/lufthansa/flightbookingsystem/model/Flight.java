@@ -19,6 +19,6 @@ public class Flight extends BaseModel {
     private LocalDateTime departureTime;
     private LocalDateTime arrivalTime;
     private int availableSeats;
-    @OneToMany(mappedBy = "flight", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "flight")
     private List<Booking> bookings;
 }

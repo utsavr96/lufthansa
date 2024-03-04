@@ -1,7 +1,7 @@
 package com.lufthansa.flightbookingsystem.service;
 
-import com.lufthansa.flightbookingsystem.dto.BookingRequestDTO;
-import com.lufthansa.flightbookingsystem.dto.BookingResponseDTO;
+import com.lufthansa.flightbookingsystem.dto.BookingRequestDto;
+import com.lufthansa.flightbookingsystem.dto.BookingResponseDto;
 import com.lufthansa.flightbookingsystem.model.Booking;
 
 import java.time.LocalDateTime;
@@ -11,15 +11,15 @@ import java.util.UUID;
 
 public interface BookingService {
 
-    Optional<Booking> findById(UUID id);
+    BookingResponseDto findById(UUID id);
 
-    List<Booking> findAll();
+    List<BookingResponseDto> findAll();
 
-    BookingResponseDTO save(BookingRequestDTO booking);
+    BookingResponseDto save(BookingRequestDto booking);
 
     void deleteById(UUID id);
 
-    Optional<Booking> findByFlightDestination(String destination);
+    BookingResponseDto findByFlightDestination(String destination);
 
-    Optional<List<Booking>> findBookingBetweenTime(LocalDateTime startTime, LocalDateTime endTime);
+    List<BookingResponseDto> findBookingBetweenTime(LocalDateTime startTime, LocalDateTime endTime);
 }

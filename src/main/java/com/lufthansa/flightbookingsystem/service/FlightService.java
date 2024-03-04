@@ -1,22 +1,21 @@
 package com.lufthansa.flightbookingsystem.service;
 
-import com.lufthansa.flightbookingsystem.model.Flight;
+import com.lufthansa.flightbookingsystem.dto.FlightRequestDto;
+import com.lufthansa.flightbookingsystem.dto.FlightResponseDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public interface FlightService {
-    Flight saveFlight(Flight flight);
 
-    Optional<Flight> getFlightById(UUID id);
+    FlightResponseDto createFlight(FlightRequestDto requestDto);
 
-    List<Flight> getAllFlights();
+    FlightResponseDto findById(String uuid);
 
-    void deleteFlight(UUID id);
+    List<FlightResponseDto> findAllFlights();
 
-    Optional<List<Flight>> findByArrivalTime(LocalDateTime arrivalTime);
+    void deleteFlight(String uuid);
 
-    Optional<List<Flight>> findByDestinationAndArrivalIfSeatsAvailable(int seatsNeeded, String origin, String destination);
+    FlightResponseDto updateFlight(String uuid, FlightRequestDto requestDto);
+
+    List<FlightResponseDto> findByOriginAndDestinationAndAvailableSeatsGreaterThanEqual(String origin, String destination, int availableSeats);
 }

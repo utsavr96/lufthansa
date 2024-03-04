@@ -5,12 +5,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity(name = "bookings")
+@ToString
 public class Booking extends BaseModel {
     private LocalDateTime bookingTime;
     private int numberOfSeats;

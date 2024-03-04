@@ -1,61 +1,55 @@
 package com.lufthansa.flightbookingsystem.controller;
 
-import com.lufthansa.flightbookingsystem.model.Flight;
+import com.lufthansa.flightbookingsystem.dto.FlightRequestDto;
+import com.lufthansa.flightbookingsystem.dto.FlightResponseDto;
 import com.lufthansa.flightbookingsystem.service.FlightService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @RestController
-@RequestMapping("/flights")
+@RequestMapping("/api/v1/flights")
+@AllArgsConstructor
 public class FlightController {
-    private FlightService flightService;
-
-    public FlightController(FlightService flightService) {
-        this.flightService = flightService;
-    }
+    private final FlightService flightService;
 
     @PostMapping
-    public ResponseEntity<Flight> saveFlight(@RequestBody Flight flight) {
-        Flight savedFlight = flightService.saveFlight(flight);
-        return new ResponseEntity<>(savedFlight, HttpStatus.CREATED);
+    public ResponseEntity<FlightResponseDto> createFlight(@RequestBody FlightRequestDto requestDto) {
+        FlightResponseDto createdFlight = flightService.createFlight(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdFlight);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Flight> getFlightById(@PathVariable UUID id) {
-        Optional<Flight> flight = flightService.getFlightById(id);
-        return flight.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @GetMapping("/uuid/{uuid}")
+    public ResponseEntity<FlightResponseDto> findById(@PathVariable String uuid) {
+        FlightResponseDto flight = flightService.findById(uuid);
+        return ResponseEntity.ok(flight);
     }
 
     @GetMapping
-    public ResponseEntity<List<Flight>> getAllFlights() {
-        List<Flight> flights = flightService.getAllFlights();
-        return new ResponseEntity<>(flights, HttpStatus.OK);
+    public ResponseEntity<List<FlightResponseDto>> findAllFlights() {
+        List<FlightResponseDto> flights = flightService.findAllFlights();
+        return ResponseEntity.ok(flights);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFlight(@PathVariable UUID id) {
-        flightService.deleteFlight(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/uuid/{uuid}")
+    public ResponseEntity<Void> deleteFlight(@PathVariable String uuid) {
+        flightService.deleteFlight(uuid);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/findByArrivalTime")
-    public ResponseEntity<List<Flight>> findByArrivalTime(@RequestParam LocalDateTime arrivalTime) {
-        Optional<List<Flight>> flights = flightService.findByArrivalTime(arrivalTime);
-        return flights.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @PutMapping("/uuid/{uuid}")
+    public ResponseEntity<FlightResponseDto> updateFlight(@PathVariable String uuid, @RequestBody FlightRequestDto requestDto) {
+        FlightResponseDto updatedFlight = flightService.updateFlight(uuid, requestDto);
+        return ResponseEntity.ok(updatedFlight);
     }
 
-    @GetMapping("/findByDestinationAndArrivalIfSeatsAvailable")
-    public ResponseEntity<List<Flight>> findByDestinationAndArrivalIfSeatsAvailable(@RequestParam int seatsNeeded, @RequestParam String origin, @RequestParam String destination) {
-        Optional<List<Flight>> flights = flightService.findByDestinationAndArrivalIfSeatsAvailable(seatsNeeded, origin, destination);
-        return flights.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @GetMapping("/search")
+    public ResponseEntity<List<FlightResponseDto>> searchFlights(@RequestParam String origin, @RequestParam String destination, @RequestParam int availableSeats) {
+        List<FlightResponseDto> flights = flightService.findByOriginAndDestinationAndAvailableSeatsGreaterThanEqual(origin, destination, availableSeats);
+        return ResponseEntity.ok(flights);
     }
+
 }

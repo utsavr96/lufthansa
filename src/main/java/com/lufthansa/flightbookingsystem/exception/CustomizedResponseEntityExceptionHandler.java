@@ -36,5 +36,22 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<Object>(details, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(FlightNotFoundException.class)
+    public final ResponseEntity<Object> handleFlightNotFoundException(Exception ex, WebRequest request) throws Exception {
+        ErrorDetails details = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<Object>(details, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoSeatAvailableException.class)
+    public final ResponseEntity<Object> handleNoSeatAvailableException(Exception ex, WebRequest request) throws Exception {
+        ErrorDetails details = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<Object>(details, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoFlightOrUserFoundException.class)
+    public final ResponseEntity<Object> handleNoFlightOrUserFoundException(Exception ex, WebRequest request) throws Exception {
+        ErrorDetails details = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<Object>(details, HttpStatus.NOT_FOUND);
+    }
 
 }
