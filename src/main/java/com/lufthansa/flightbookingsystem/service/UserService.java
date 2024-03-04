@@ -1,23 +1,8 @@
 package com.lufthansa.flightbookingsystem.service;
 
-import com.lufthansa.flightbookingsystem.model.User;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import com.lufthansa.flightbookingsystem.dto.UserRequestDto;
+import com.lufthansa.flightbookingsystem.dto.UserResponseDto;
 
 public interface UserService {
-    User createUser(User user);
-
-    Optional<User> getUserById(UUID id);
-
-    Optional<User> getUserByUsername(String username);
-
-    Optional<User> getUserByEmail(String email);
-
-    List<User> getAllUsers();
-
-    User updateUser(UUID id, User user);
-
-    void deleteUser(UUID id);
+    UserResponseDto createUser(UserRequestDto user);
 }
