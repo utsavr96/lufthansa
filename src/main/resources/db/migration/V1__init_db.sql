@@ -24,7 +24,6 @@ CREATE TABLE flights
 CREATE TABLE users
 (
     id           BINARY(16)   NOT NULL,
-    username     VARCHAR(255) NULL,
     email        VARCHAR(255) NULL,
     password     VARCHAR(255) NULL,
     nationality  VARCHAR(255) NULL,
@@ -32,6 +31,12 @@ CREATE TABLE users
     phone_number VARCHAR(255) NULL,
     CONSTRAINT pk_users PRIMARY KEY (id)
 );
+
+ALTER TABLE users
+    ADD CONSTRAINT uc_users_email UNIQUE (email);
+
+ALTER TABLE users
+    ADD CONSTRAINT uc_users_phone_number UNIQUE (phone_number);
 
 ALTER TABLE bookings
     ADD CONSTRAINT FK_BOOKINGS_ON_FLIGHT FOREIGN KEY (flight_id) REFERENCES flights (id);
