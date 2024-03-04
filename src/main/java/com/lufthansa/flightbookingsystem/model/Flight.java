@@ -1,6 +1,5 @@
 package com.lufthansa.flightbookingsystem.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;

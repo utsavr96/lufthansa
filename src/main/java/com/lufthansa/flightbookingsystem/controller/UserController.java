@@ -33,20 +33,20 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDto>> findAllUsers(){
+    public ResponseEntity<List<UserResponseDto>> findAllUsers() {
         List<UserResponseDto> allUsers = userService.findAllUsers();
         return new ResponseEntity<List<UserResponseDto>>(allUsers, HttpStatus.OK);
     }
 
 
     @DeleteMapping("/id/{id}")
-    public ResponseEntity deleteUserById(@PathVariable String id){
+    public ResponseEntity deleteUserById(@PathVariable String id) {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/id/{id}")
-    public ResponseEntity<UserResponseDto> updateUserById(@PathVariable String id, @RequestBody UserRequestDto userRequestDto){
+    public ResponseEntity<UserResponseDto> updateUserById(@PathVariable String id, @RequestBody UserRequestDto userRequestDto) {
         UserResponseDto responseDto = userService.updateUserById(id, userRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }

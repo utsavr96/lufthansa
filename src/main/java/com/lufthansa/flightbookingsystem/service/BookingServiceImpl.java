@@ -2,6 +2,7 @@ package com.lufthansa.flightbookingsystem.service;
 
 import com.lufthansa.flightbookingsystem.dto.BookingRequestDto;
 import com.lufthansa.flightbookingsystem.dto.BookingResponseDto;
+import com.lufthansa.flightbookingsystem.exception.BookingNotFoundException;
 import com.lufthansa.flightbookingsystem.exception.NoFlightOrUserFoundException;
 import com.lufthansa.flightbookingsystem.exception.NoSeatAvailableException;
 import com.lufthansa.flightbookingsystem.mapper.BookingMapper;
@@ -32,13 +33,17 @@ public class BookingServiceImpl implements BookingService {
     private final BookingMapper bookingMapper;
 
     @Override
-    public BookingResponseDto findById(UUID id) {
-        return null;
+    public BookingResponseDto findById(String uuid) {
+        Optional<Booking> optionalBooking = bookingRepository.findById(UUID.fromString(uuid));
+        if (optionalBooking.isPresent()) return bookingMapper.mapToDto(optionalBooking.get());
+        else throw new BookingNotFoundException("No booking available!");
     }
 
     @Override
     public List<BookingResponseDto> findAll() {
-        return null;
+        List<Booking> bookings = bookingRepository.findAll();
+        if (!bookings.isEmpty()) return bookingMapper.mapToDto(bookings);
+        else throw new BookingNotFoundException("No booking available!");
     }
 
     @Override
@@ -46,34 +51,39 @@ public class BookingServiceImpl implements BookingService {
         Optional<User> optionalUser = userRepository.findById(UUID.fromString(request.getUserId()));
         Optional<Flight> optionalFlight = flightRepository.findById(UUID.fromString(request.getFlightId()));
         BookingResponseDto bookingResponseDto = null;
-        if (optionalFlight.isPresent() && optionalUser.isPresent()){
+        if (optionalFlight.isPresent() && optionalUser.isPresent()) {
             Flight flight = optionalFlight.get();
-            if(flight.getAvailableSeats() >= request.getNumberOfSeats()){
+            if (flight.getAvailableSeats() >= request.getNumberOfSeats()) {
                 Booking booking = bookingMapper.map(request);
                 booking.setUser(optionalUser.get());
                 booking.setFlight(optionalFlight.get());
                 Booking savedBooking = bookingRepository.save(booking);
-                flight.setAvailableSeats(flight.getAvailableSeats()-request.getNumberOfSeats());
+                flight.setAvailableSeats(flight.getAvailableSeats() - request.getNumberOfSeats());
                 flightRepository.save(flight);
                 bookingResponseDto = bookingMapper.mapToDto(savedBooking);
-            }else throw new NoSeatAvailableException("No seat available.");
+            } else throw new NoSeatAvailableException("No seat available.");
 
-        }else throw new NoFlightOrUserFoundException("Check user id or flight id");
+        } else throw new NoFlightOrUserFoundException("Check user id or flight id");
         return bookingResponseDto;
     }
 
     @Override
-    public void deleteById(UUID id) {
-
+    public void deleteById(String uuid) {
+        bookingRepository.deleteById(UUID.fromString(uuid));
     }
 
     @Override
-    public BookingResponseDto findByFlightDestination(String destination) {
-        return null;
+    public List<BookingResponseDto> findByFlightDestination(String destination) {
+        Optional<List<Booking>> optionalBooking = bookingRepository.findByFlight_Destination(destination);
+        if (optionalBooking.isPresent()) return bookingMapper.mapToDto(optionalBooking.get());
+        else throw new BookingNotFoundException("No booking available!");
     }
 
     @Override
     public List<BookingResponseDto> findBookingBetweenTime(LocalDateTime startTime, LocalDateTime endTime) {
-        return null;
+        Optional<List<Booking>> bookingBetweenTime = bookingRepository.findBookingBetweenTime(startTime, endTime);
+        if (bookingBetweenTime.isPresent() && !bookingBetweenTime.get().isEmpty())
+            return bookingMapper.mapToDto(bookingBetweenTime.get());
+        else throw new BookingNotFoundException("No booking available!");
     }
 }

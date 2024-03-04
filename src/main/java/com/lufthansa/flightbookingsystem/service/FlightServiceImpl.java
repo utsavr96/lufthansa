@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 @AllArgsConstructor
-public class FlightServiceImpl implements FlightService{
+public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flightRepository;
     private final FlightMapper flightMapper;
@@ -33,13 +33,13 @@ public class FlightServiceImpl implements FlightService{
         UUID id = UUID.fromString(uuid);
         Optional<Flight> flight = flightRepository.findById(id);
         if (flight.isPresent()) return flightMapper.mapToDto(flight.get());
-        else throw new FlightNotFoundException("Flight not found with id "+ uuid);
+        else throw new FlightNotFoundException("Flight not found with id " + uuid);
     }
 
     @Override
     public List<FlightResponseDto> findAllFlights() {
         List<Flight> flights = flightRepository.findAll();
-        if(flights != null && flights.size()>0){
+        if (flights != null && flights.size() > 0) {
             return flightMapper.mapToDto(flights);
         }
         throw new FlightNotFoundException("No flights found.");
@@ -56,8 +56,8 @@ public class FlightServiceImpl implements FlightService{
         UUID id = UUID.fromString(uuid);
         Flight flight;
         Optional<Flight> optionalFlight = flightRepository.findById(id);
-        if (optionalFlight.isPresent()){
-            flight= optionalFlight.get();
+        if (optionalFlight.isPresent()) {
+            flight = optionalFlight.get();
             flight.setFlightNumber(requestDto.getFlightNumber());
             flight.setOrigin(requestDto.getOrigin());
             flight.setDestination(requestDto.getDestination());
@@ -65,14 +65,14 @@ public class FlightServiceImpl implements FlightService{
             flight.setDepartureTime(requestDto.getDepartureTime());
             flight.setAvailableSeats(requestDto.getAvailableSeats());
             flightRepository.save(flight);
-        }else throw new FlightNotFoundException("No flight found with id "+ uuid);
+        } else throw new FlightNotFoundException("No flight found with id " + uuid);
         return flightMapper.mapToDto(flight);
     }
 
     @Override
     public List<FlightResponseDto> findByOriginAndDestinationAndAvailableSeatsGreaterThanEqual(String origin, String destination, int availableSeats) {
         List<Flight> flights = flightRepository.findByOriginAndDestinationAndAvailableSeatsGreaterThanEqual(origin, destination, availableSeats);
-        if(flights != null && flights.size()>0){
+        if (flights != null && flights.size() > 0) {
             return flightMapper.mapToDto(flights);
         }
         throw new FlightNotFoundException("No flights found.");

@@ -1,9 +1,7 @@
 package com.lufthansa.flightbookingsystem.repository;
 
-import com.lufthansa.flightbookingsystem.custom.RepositoryQuery;
 import com.lufthansa.flightbookingsystem.model.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

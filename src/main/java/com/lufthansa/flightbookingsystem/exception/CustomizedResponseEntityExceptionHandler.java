@@ -54,4 +54,10 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<Object>(details, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BookingNotFoundException.class)
+    public final ResponseEntity<Object> handleBookingNotFoundException(Exception ex, WebRequest request) throws Exception {
+        ErrorDetails details = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<Object>(details, HttpStatus.NOT_FOUND);
+    }
+
 }
