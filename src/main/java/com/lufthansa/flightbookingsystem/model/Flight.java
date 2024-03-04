@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,5 +20,5 @@ public class Flight extends BaseModel {
     private LocalDateTime arrivalTime;
     private int availableSeats;
     @OneToMany(mappedBy = "flight", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private Booking booking;
+    private List<Booking> bookings;
 }
