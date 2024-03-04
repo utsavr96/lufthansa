@@ -48,13 +48,6 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/passport/{passportNumber}")
-    public ResponseEntity<User> getUserByPassportNumber(@PathVariable String passportNumber) {
-        Optional<User> user = userService.getUserByPassportNumber(passportNumber);
-        return user.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();

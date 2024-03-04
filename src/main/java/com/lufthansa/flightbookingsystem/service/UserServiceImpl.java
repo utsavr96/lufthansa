@@ -36,10 +36,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-    @Override
-    public Optional<User> getUserByPassportNumber(String passportNumber) {
-        return userRepository.findByPassport_PassportNumber(passportNumber);
-    }
 
     @Override
     public List<User> getAllUsers() {

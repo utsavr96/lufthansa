@@ -21,36 +21,20 @@ CREATE TABLE flights
     CONSTRAINT pk_flights PRIMARY KEY (id)
 );
 
-CREATE TABLE passport
-(
-    id              BINARY(16)   NOT NULL,
-    passport_number VARCHAR(255) NULL,
-    issuing_country VARCHAR(255) NULL,
-    expiration_date VARCHAR(255) NULL,
-    CONSTRAINT pk_passport PRIMARY KEY (id)
-);
-
 CREATE TABLE users
 (
     id           BINARY(16)   NOT NULL,
     username     VARCHAR(255) NULL,
     email        VARCHAR(255) NULL,
     password     VARCHAR(255) NULL,
-    passport_id  BINARY(16)   NULL,
     nationality  VARCHAR(255) NULL,
     address      VARCHAR(255) NULL,
     phone_number VARCHAR(255) NULL,
     CONSTRAINT pk_users PRIMARY KEY (id)
 );
 
-ALTER TABLE users
-    ADD CONSTRAINT uc_users_passport UNIQUE (passport_id);
-
 ALTER TABLE bookings
     ADD CONSTRAINT FK_BOOKINGS_ON_FLIGHT FOREIGN KEY (flight_id) REFERENCES flights (id);
 
 ALTER TABLE bookings
     ADD CONSTRAINT FK_BOOKINGS_ON_USER FOREIGN KEY (user_id) REFERENCES users (id);
-
-ALTER TABLE users
-    ADD CONSTRAINT FK_USERS_ON_PASSPORT FOREIGN KEY (passport_id) REFERENCES passport (id);

@@ -15,8 +15,6 @@ public interface UserService {
 
     Optional<User> getUserByEmail(String email);
 
-    Optional<User> getUserByPassportNumber(String passportNumber);
-
     List<User> getAllUsers();
 
     User updateUser(UUID id, User user);
