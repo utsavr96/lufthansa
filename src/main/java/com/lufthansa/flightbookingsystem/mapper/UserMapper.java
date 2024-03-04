@@ -6,6 +6,8 @@ import com.lufthansa.flightbookingsystem.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 
@@ -14,4 +16,6 @@ public interface UserMapper {
     User map(UserRequestDto userRequestDto);
 
     UserResponseDto mapToDto(User user);
+
+    List<UserResponseDto> mapListToDto(List<User> userList);
 }
