@@ -21,7 +21,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException ex, WebRequest request) {
-        String errorMessage = "Database constraint violation";
+        String errorMessage = "Database constraint violation | duplicate value";
         if (ex.getCause() instanceof SQLIntegrityConstraintViolationException) {
             SQLIntegrityConstraintViolationException sqlEx = (SQLIntegrityConstraintViolationException) ex.getCause();
             errorMessage = sqlEx.getMessage();
