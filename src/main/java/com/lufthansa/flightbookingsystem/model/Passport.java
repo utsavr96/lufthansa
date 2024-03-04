@@ -12,6 +12,4 @@ public class Passport extends BaseModel {
     private String passportNumber;
     private String issuingCountry;
     private String expirationDate;
-    @OneToOne
-    private User user;
 }

@@ -1,9 +1,6 @@
 package com.lufthansa.flightbookingsystem.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +15,8 @@ public class User extends BaseModel {
     private String username;
     private String email;
     private String password;
-    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne
+    @JoinColumn(name = "passport_id")
     private Passport passport;
     private String nationality;
     private String address;
