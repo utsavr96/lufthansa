@@ -21,8 +21,9 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<BookingResponseDto> saveBooking(@RequestBody BookingRequestDto requestDto) {
+        log.info("Request - create booking "+ requestDto);
         BookingResponseDto savedBooking = bookingService.save(requestDto);
-        log.info("savedBooking ii " + savedBooking);
+        log.info("Request executed successfully!");
         return ResponseEntity.status(HttpStatus.CREATED).body(savedBooking);
     }
 

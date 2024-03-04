@@ -48,18 +48,25 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingResponseDto save(BookingRequestDto request) {
+        log.info("finding user with id "+request.getUserId());
         Optional<User> optionalUser = userRepository.findById(UUID.fromString(request.getUserId()));
+        log.info("user :"+ optionalUser.get().getEmail());
+        log.info("finding flight with id "+request.getFlightId());
         Optional<Flight> optionalFlight = flightRepository.findById(UUID.fromString(request.getFlightId()));
+        log.info("flight :"+ optionalFlight.get());
         BookingResponseDto bookingResponseDto = null;
         if (optionalFlight.isPresent() && optionalUser.isPresent()) {
             Flight flight = optionalFlight.get();
             if (flight.getAvailableSeats() >= request.getNumberOfSeats()) {
+                log.info(""+flight.getAvailableSeats()+" seats are available.");
                 Booking booking = bookingMapper.map(request);
                 booking.setUser(optionalUser.get());
                 booking.setFlight(optionalFlight.get());
                 Booking savedBooking = bookingRepository.save(booking);
+                log.info("booking created!");
                 flight.setAvailableSeats(flight.getAvailableSeats() - request.getNumberOfSeats());
                 flightRepository.save(flight);
+                log.info("flight updated!");
                 bookingResponseDto = bookingMapper.mapToDto(savedBooking);
             } else throw new NoSeatAvailableException("No seat available.");
 
