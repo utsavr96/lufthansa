@@ -38,7 +38,7 @@ public class UserControllerTest {
     public void testFindUserById_ExistingId() {
         String uuid = UUID.randomUUID().toString();
         UserResponseDto responseDto = new UserResponseDto();
-        when(userService.findById(uuid)).thenReturn(responseDto);
+        when(userService.findById(any(String.class))).thenReturn(responseDto);
 
         ResponseEntity<UserResponseDto> response = userController.findUserById(uuid);
 
@@ -50,7 +50,7 @@ public class UserControllerTest {
     @Test
     public void testFindUserById_NonExistingId() {
         String uuid = UUID.randomUUID().toString();
-        when(userService.findById(uuid)).thenThrow(UserNotFoundException.class);
+        when(userService.findById(any(String.class))).thenThrow(UserNotFoundException.class);
 
         assertThrows(UserNotFoundException.class, () -> {
             userController.findUserById(uuid);
@@ -63,7 +63,7 @@ public class UserControllerTest {
     public void testCreateUser_Success() {
         UserRequestDto requestDto = new UserRequestDto();
         UserResponseDto responseDto = new UserResponseDto();
-        when(userService.createUser(requestDto)).thenReturn(responseDto);
+        when(userService.createUser(any(UserRequestDto.class))).thenReturn(responseDto);
 
         ResponseEntity<UserResponseDto> response = userController.createUser(requestDto);
 
