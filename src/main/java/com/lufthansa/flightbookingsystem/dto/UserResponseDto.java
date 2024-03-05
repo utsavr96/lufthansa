@@ -1,12 +1,14 @@
 package com.lufthansa.flightbookingsystem.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserResponseDto {
     private UUID id;
     private String email;
